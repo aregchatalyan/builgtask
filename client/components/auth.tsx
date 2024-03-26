@@ -3,6 +3,7 @@
 import { FC } from 'react';
 import { useFormState } from 'react-dom';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 import { login } from '@/lib/auth/login';
 import { register } from '@/lib/auth/register';
 
@@ -15,6 +16,10 @@ export const Auth: FC<AuthProps> = ({ mode }) => {
   const router = useRouter();
   const action = mode ? register : login;
   const [ state, dispatch ] = useFormState(action, {});
+
+  if (state.message) {
+    toast.error(state.message);
+  }
 
   return (
     <div className="flex flex-col mt-48">

@@ -6,7 +6,7 @@ export const fetcher = async (url: string, method: string = 'GET', body: any = n
   }
 
   try {
-    const response = await fetch(url, { method, body, headers });
+    const response = await fetch(url, { method, body, headers, cache: 'no-store' });
 
     return await response.json();
   } catch (e) {

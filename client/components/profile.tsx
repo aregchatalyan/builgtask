@@ -2,6 +2,7 @@
 
 import { FC, useState } from 'react';
 import { useFormState } from 'react-dom';
+import { toast } from 'react-hot-toast';
 import { updateUser } from '@/lib/user/updateUser';
 import { ReviewData } from '@/components/review';
 
@@ -34,6 +35,10 @@ interface ProfileEditProps {
 export const ProfileEdit: FC<ProfileEditProps> = ({ data }) => {
   const [ state, dispatch ] = useFormState(updateUser, data);
   const [ sync, setSync ] = useState<boolean>(!!(data?.company?.name || data?.company?.address));
+
+  if (state.message) {
+    toast.error(state.message);
+  }
 
   const onSync = () => {
     setSync(prevState => !prevState);
