@@ -368,6 +368,7 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
     singularName: 'company';
     pluralName: 'companies';
     displayName: 'Company';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -381,6 +382,11 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       Attribute.SetMinMaxLength<{
         minLength: 2;
       }>;
+    reviews: Attribute.Relation<
+      'api::company.company',
+      'oneToMany',
+      'api::review.review'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -392,6 +398,47 @@ export interface ApiCompanyCompany extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::company.company',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiReviewReview extends Schema.CollectionType {
+  collectionName: 'reviews';
+  info: {
+    singularName: 'review';
+    pluralName: 'reviews';
+    displayName: 'Review';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author_id: Attribute.String;
+    author_title: Attribute.String;
+    author_image: Attribute.String;
+    review_timestamp: Attribute.BigInteger;
+    company: Attribute.Relation<
+      'api::review.review',
+      'manyToOne',
+      'api::company.company'
+    >;
+    review_rating: Attribute.Integer;
+    review_text: Attribute.Text;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::review.review',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::review.review',
       'oneToOne',
       'admin::user'
     > &
@@ -842,6 +889,7 @@ declare module '@strapi/types' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'api::company.company': ApiCompanyCompany;
+      'api::review.review': ApiReviewReview;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;

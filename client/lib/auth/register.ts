@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { fetcher } from '@/utils/fetcher';
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -32,18 +33,13 @@ export async function register(prevState: any, formData: any) {
   const { username, email, password } = validatedFields.data;
 
   try {
-    const response: any = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username, email, password }),
-      cache: 'no-cache'
-    });
+    const data = await fetcher(url,
+      'POST',
+      { username, email, password }
+    );
 
-    const data = await response.json();
-    if (!response.ok && data.error) return { ...prevState, message: data.error.message, errors: null };
-    if (response.ok && data.jwt) cookies().set('jwt', data.jwt);
+    if (data.error) return { ...prevState, message: data.error.message, errors: null };
+    if (data.jwt) cookies().set('jwt', data.jwt);
   } catch (error) {
     console.log(error);
     return { error: 'Server error please try again later.' };

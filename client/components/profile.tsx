@@ -2,14 +2,16 @@
 
 import { FC, useState } from 'react';
 import { useFormState } from 'react-dom';
-import { update } from '@/lib/user/update';
+import { updateUser } from '@/lib/user/updateUser';
+import { ReviewData } from '@/components/review';
 
 interface Company {
   name: string;
   address: string;
+  reviews: ReviewData[]
 }
 
-interface User {
+export interface User {
   id: number;
   firstname: string;
   lastname: string;
@@ -30,7 +32,7 @@ interface ProfileEditProps {
 }
 
 export const ProfileEdit: FC<ProfileEditProps> = ({ data }) => {
-  const [ state, dispatch ] = useFormState(update, data);
+  const [ state, dispatch ] = useFormState(updateUser, data);
   const [ sync, setSync ] = useState<boolean>(!!(data?.company?.name || data?.company?.address));
 
   const onSync = () => {

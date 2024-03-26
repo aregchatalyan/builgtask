@@ -1,8 +1,8 @@
-import { fetchMe } from '@/lib/user/me';
+import { me } from '@/lib/user/me';
 import { ProfileEdit } from '@/components/profile';
 
 const Profile = async () => {
-  const user = await fetchMe();
+  const user = await me();
 
   return <ProfileEdit data={ user }/>;
 }

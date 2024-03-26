@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reviews",
+  "info": {
+    "singularName": "review",
+    "pluralName": "reviews",
+    "displayName": "Review",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "author_id": {
+      "type": "string"
+    },
+    "author_title": {
+      "type": "string"
+    },
+    "author_image": {
+      "type": "string"
+    },
+    "review_timestamp": {
+      "type": "biginteger"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "reviews"
+    },
+    "review_rating": {
+      "type": "integer"
+    },
+    "review_text": {
+      "type": "text"
+    }
+  }
+}
